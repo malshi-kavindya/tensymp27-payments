@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TENSYMP 2027 | Payment Portal</title>
+
+    <link rel="icon" href="https://tensymp27.ieee.lk/TENSYMP%202027-crop.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container pb-2">
+
+    <nav class="app-nav">
+        <div class="app-nav-brand">
+            <img src="https://tensymp27.ieee.lk/TENSYMP%202027.png" alt="TENSYMP 2027 Logo" class="app-nav-logo">
+            <div>
+                <div class="brand-name">TENSYMP 2027</div>
+                <div class="brand-sub">Registration & Payment Portal</div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <span class="hero-badge"><i class="bi bi-award"></i> IEEE Sri Lanka Section</span>
+        <h1>R10 IEEE TENSYMP 2027 — Registration & Payment</h1>
+        <p class="lead">
+            Secure your place at R10 IEEE TENSYMP 2027. Choose a payment method below, complete your
+            details, and upload your payment evidence to finish.
+        </p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <i class="bi bi-calendar-event stat-icon"></i>
+                <span>Early Bird until 15 Mar 2027</span>
+            </div>
+            <div class="hero-stat">
+                <i class="bi bi-shield-lock stat-icon"></i>
+                <span>Secure online payments</span>
+            </div>
+            <div class="hero-stat">
+                <i class="bi bi-file-earmark-pdf stat-icon"></i>
+                <span>Instant PDF confirmation</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="mb-2">
+        <div class="section-title">Choose Payment Method</div>
+        <div class="section-sub">Select how you want to make your payment. After paying, you will be redirected back here to upload your evidence.</div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6">
+            <div class="card payment-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="icon-circle bg-blue me-3"><i class="bi bi-bank"></i></div>
+                        <h5 class="mb-0">Manual Payment</h5>
+                    </div>
+                    <p class="small text-muted mb-3">
+                        Pay via bank deposit or online transfer. Fill out the form and receive a PDF
+                        containing the bank account, amount to pay, and payment particulars.
+                    </p>
+                    <a href="payform.html" class="btn btn-modern btn-blue w-100">
+                        Proceed Manual Payment <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="card payment-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="icon-circle bg-green me-3"><i class="bi bi-credit-card"></i></div>
+                        <h5 class="mb-0">Online Payment <span class="badge rounded-pill text-bg-warning ms-1">Coming soon</span></h5>
+                    </div>
+                    <p class="small text-muted mb-3">
+                        Pay instantly through cards via our secure gateway. Online payments are currently
+                        unavailable — please use Manual Payment instead.
+                    </p>
+                    <button type="button" class="btn btn-modern btn-ghost w-100" disabled>
+                        <i class="bi bi-hourglass-split"></i> Temporarily Unavailable
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">How it works</div>
+    <div class="section-sub">Three simple steps from registration to confirmation.</div>
+
+    <div class="steps-strip mb-4">
+        <div class="row g-3 align-items-center">
+            <div class="col-12 col-md">
+                <div class="step-item">
+                    <div class="step-num">1</div>
+                    <div>
+                        <div class="step-title">Fill in your details</div>
+                        <div class="step-desc">Select your category and paper / membership info</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto d-none d-md-block"><span class="step-arrow"><i class="bi bi-chevron-right"></i></span></div>
+            <div class="col-12 col-md">
+                <div class="step-item">
+                    <div class="step-num">2</div>
+                    <div>
+                        <div class="step-title">Make your payment</div>
+                        <div class="step-desc">Online gateway or manual bank transfer</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto d-none d-md-block"><span class="step-arrow"><i class="bi bi-chevron-right"></i></span></div>
+            <div class="col-12 col-md">
+                <div class="step-item">
+                    <div class="step-num">3</div>
+                    <div>
+                        <div class="step-title">Upload evidence</div>
+                        <div class="step-desc">Confirm payment with your slip or PDF</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card payment-card compulsory-card mb-4">
+        <div class="card-body d-flex flex-column flex-md-row align-items-md-center gap-3">
+            <div class="icon-circle bg-amber flex-shrink-0"><i class="bi bi-upload"></i></div>
+            <div class="flex-grow-1">
+                <h5 class="mb-1">Upload Payment Evidence — Required</h5>
+                <p class="small text-muted mb-0">
+                    Required after completing your payment (online or manual). Upload your payment slip
+                    or transaction proof to complete the process.
+                </p>
+            </div>
+            <a href="upload.html" class="btn btn-modern btn-amber flex-shrink-0">
+                <i class="bi bi-upload"></i> Upload Evidence
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<footer class="app-footer">
+    © IEEE Sri Lanka Section • <strong>R10 IEEE TENSYMP 2027</strong> • All rights reserved
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

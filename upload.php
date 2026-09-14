@@ -1,0 +1,172 @@
+<?php require __DIR__ . '/config.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?= CONFERENCE_SHORT ?> | Upload Payment Evidence</title>
+
+    <link rel="icon" href="<?= CONFERENCE_FAVICON ?>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container pb-2">
+
+    <nav class="app-nav">
+        <div class="app-nav-brand">
+            <img src="<?= CONFERENCE_LOGO ?>" alt="<?= CONFERENCE_SHORT ?> Logo" class="app-nav-logo">
+            <div>
+                <div class="brand-name"><?= CONFERENCE_SHORT ?></div>
+                <div class="brand-sub">Upload Payment Evidence</div>
+            </div>
+        </div>
+        <a href="index.php" class="btn btn-modern btn-ghost btn-sm"><i class="bi bi-arrow-left"></i> Back to Home</a>
+    </nav>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-12 col-lg-8 col-xl-7">
+
+            <div class="card payment-card mb-4" style="height:auto;">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="icon-circle bg-amber me-3"><i class="bi bi-upload"></i></div>
+                        <div>
+                            <h4 class="mb-0">Upload Payment Evidence</h4>
+                            <small class="text-muted">Required step after completing your payment</small>
+                        </div>
+                    </div>
+
+                    <p class="text-muted small mb-4">
+                        Enter the reference number you received after completing your payment — either via
+                        manual bank transfer or online payment — and upload your payment slip or PDF to
+                        complete verification. Accepted formats: PDF, JPG, PNG.
+                    </p>
+
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <div id="responseMsg"></div>
+
+                        <div class="mb-4">
+                            <label class="form-label" for="reference">Payment Reference Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-hash"></i></span>
+                                <input type="text" name="reference" id="reference" class="form-control" placeholder="Enter reference number" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Payment Slip / Transaction Proof</label>
+                            <div class="upload-zone" id="uploadZone">
+                                <input type="file" name="receipt" id="receipt" accept=".pdf,.jpg,.jpeg,.png" required>
+                                <div class="upload-icon"><i class="bi bi-cloud-arrow-up"></i></div>
+                                <div class="upload-title">Drag & drop your payment slip here</div>
+                                <div class="upload-sub">or <span style="color:var(--primary); font-weight:600;">browse files</span> — PDF, JPG or PNG (max 5 MB)</div>
+                            </div>
+                            <div class="file-chip" id="fileChip"><i class="bi bi-file-earmark-check"></i> <span id="fileName"></span></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-modern btn-amber w-100" id="submitBtn">
+                            <i class="bi bi-cloud-arrow-up"></i> Upload Evidence
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="app-footer">
+    © IEEE Sri Lanka Section • <strong><?= CONFERENCE_NAME ?></strong> • All rights reserved
+</footer>
+
+<script>
+    const uploadForm = document.getElementById('uploadForm');
+    const responseMsg = document.getElementById('responseMsg');
+    const submitBtn = document.getElementById('submitBtn');
+    const uploadZone = document.getElementById('uploadZone');
+    const fileInput = document.getElementById('receipt');
+    const fileChip = document.getElementById('fileChip');
+    const fileName = document.getElementById('fileName');
+
+    const MAX_SIZE = 5 * 1024 * 1024;
+
+    fileInput.addEventListener('change', function() {
+        if (this.files.length) {
+            const f = this.files[0];
+            fileName.textContent = f.name + ' (' + (f.size / 1024 / 1024).toFixed(2) + ' MB)';
+            fileChip.style.display = 'flex';
+            uploadZone.classList.remove('dragover');
+        }
+    });
+
+    ['dragenter', 'dragover'].forEach(evt => uploadZone.addEventListener(evt, e => {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+    }));
+
+    ['dragleave', 'drop'].forEach(evt => uploadZone.addEventListener(evt, e => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+    }));
+
+    uploadZone.addEventListener('dragover', e => e.preventDefault());
+    uploadZone.addEventListener('drop', e => {
+        e.preventDefault();
+        if (e.dataTransfer.files.length) {
+            fileInput.files = e.dataTransfer.files;
+            fileInput.dispatchEvent(new Event('change'));
+        }
+    });
+
+    uploadForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        responseMsg.innerHTML = '';
+
+        if (fileInput.files.length && fileInput.files[0].size > MAX_SIZE) {
+            responseMsg.innerHTML = '<div class="alert-modern alert-error-mod mb-3"><i class="bi bi-exclamation-triangle me-2"></i>File exceeds the 5 MB limit.</div>';
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Uploading...';
+
+        const formData = new FormData(uploadForm);
+
+        fetch('upload-process.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(async response => {
+            const text = await response.text();
+            try {
+                const data = JSON.parse(text);
+                const icon = data.success ? 'bi-check-circle' : 'bi-x-circle';
+                const cls = data.success ? 'alert-success-mod' : 'alert-error-mod';
+                responseMsg.innerHTML = `<div class="alert-modern ${cls} mb-3"><i class="bi ${icon} me-2"></i>${data.message}</div>`;
+                if (data.success) {
+                    uploadForm.reset();
+                    fileChip.style.display = 'none';
+                }
+            } catch (err) {
+                responseMsg.innerHTML = `<div class="alert-modern alert-error-mod mb-3"><i class="bi bi-x-circle me-2"></i>${text}</div>`;
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            responseMsg.innerHTML = `<div class="alert-modern alert-error-mod mb-3"><i class="bi bi-x-circle me-2"></i>Network error: ${error.message}</div>`;
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="bi bi-cloud-arrow-up"></i> Upload Evidence';
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
